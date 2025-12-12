@@ -18,7 +18,7 @@ You need to log in:
 ### Example Flow
 
 The app greets you with your access request inbox where you can inspect, accept or decline access requests.
-We assume that your WebID profile links to an `ldn:inbox` which we expect access requests to be posted to.
+We assume that your WebID profile links to an `ldp:inbox` which we expect access requests to be posted to.
 If your profile does not have such a link, you need to add it yourself at the moment.
 ![inbox](img/inbox.png)
 ![inbox details](img/inbox-details.png)
@@ -35,7 +35,7 @@ Such receipts are available in the `History` Tab.
 Currently, we manage access receipts and corresponding authorization logs on your Pod in "hardwired" containers. This is not ideal but good enough of a start.
 The [MANDAT AuthApp](https://github.com/DATEV-Research/Solid-authorization-app) chose to rely on data registries and data registrations according to SAI - but those are not available in regular Pods out-of-the-box.
 Similarly, type indicies are not always present.
-In fact, even our assumption of the `ldn:inbox` is not provided by default on CSS (for example).
+In fact, even our assumption of the `ldp:inbox` is not provided by default on CSS (for example).
 Therefore, we -- as a community -- need to discuss and decide how to properly support finding where data lives or where data should be stored, i.e. reliable discovery.
 
 ## How to get an Access Request?
