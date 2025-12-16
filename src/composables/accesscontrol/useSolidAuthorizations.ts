@@ -118,10 +118,10 @@ export async function createAccessReceipt(
       interop:grantee ${input.grantees.map(t => `<${t}>`).join(", ")} ;
       interop:grantedAt "${date}"^^xsd:dateTime 
       ${input.purposes.length > 0
-      ? `; dpv:purpose ${input.purposes.map(t => `<${t}>`).join(", ")}`
+      ? `; dpv:purpose ${input.purposes.map(t => t.startsWith('http') ? `<${t}>` : `"${t}"`).join(", ")}`
       : ""} 
       ${input.seeAlso.length > 0
-      ? `; rdfs:seeAlso ${input.seeAlso.map(t => `<${t}>`).join(", ")}`
+      ? `; rdfs:seeAlso ${input.seeAlso.map(t =>  t.startsWith('http') ? `<${t}>` : `"${t}"`).join(", ")}`
       : ""} 
       ${input.replaces
       ? `; interop:replaces <${input.replaces}>`

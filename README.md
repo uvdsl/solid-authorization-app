@@ -1,13 +1,16 @@
 # Solid Authorization App
 
-This is a simple Web App to control and manage access to your data following the [Solid protocol](https://solidproject.org/TR/protocol).
+This is a Web App to control and manage access to your data following the [Solid protocol](https://solidproject.org/TR/protocol).
 It assumes that access control is managed using [Web Access Control](https://solid.github.io/web-access-control-spec/).
-It is far from perfect, but it is a start towards an access control app that works on the Solid Pods we have today, without requiring custom modifications.
+It is far from perfect, but it is a start towards an access control app that works on the Solid Pods we have today, without requiring sophisticated setup.
 
 This work is based on 
 - Andreas Both, Thorsten Kastner, Dustin Yeboah, Christoph Braun, Daniel Schraudner, Sebastian Schmid, Tobias Käfer, Andreas Harth: _AuthApp - Portable, Reusable Solid App for GDPR-Compliant Access Granting._ ICWE 2024: 199-214 [[Postprint](https://publikationen.bibliothek.kit.edu/1000172187)]
 
-but strips away some of the design decisions that make the corresponding implemenation, the [MANDAT AuthApp](https://github.com/DATEV-Research/Solid-authorization-app), not usable out-of-the-box.
+but strips away dependencies on [SAI](https://solid.github.io/data-interoperability-panel/specification/)'s Data Registries and ShapeTrees that make the corresponding implementation, the [MANDAT AuthApp](https://github.com/DATEV-Research/Solid-authorization-app), require corresponding setup. Today's default provisioned Solid Pods do not come with Data Registrations or ShapeTree definitions. 
+
+We thus provide this Solid Authorization App for enabling (and showcasing) the fundamental use cases around access authorization on current standard Solid Pods.
+For advanced use cases right now, we still recommend looking into the [MANDAT AuthApp](https://github.com/DATEV-Research/Solid-authorization-app).
 
 
 ## Intended Usage (Demo)
@@ -15,11 +18,21 @@ but strips away some of the design decisions that make the corresponding impleme
 You need to log in:
 ![app preview](img/app-preview.png)
 
+The app checks if you are already set up to use it. It checks:
+- whether you have an `ldp:inbox` linked in your WebID profile
+- whether that inbox (container) actually exists
+- whether the desired containers to document authorization information in already exist in your Solid Pod
+
+If anything is missing, you will be asked for consent to set things up for you.
+![consent setup](img/consent-setup.png)
+
+If we created the inbox for you, then we will ask you to grant any agent `acl:Append` permissions (append only, reading is only allowed for you!). This already follows the regular authorization flow in this app, which we describe next.
+![inbox setup](img/inbox-setup.png)
+
 ### Example Flow
 
 The app greets you with your access request inbox where you can inspect, accept or decline access requests.
 We assume that your WebID profile links to an `ldp:inbox` which we expect access requests to be posted to.
-If your profile does not have such a link, you need to add it yourself at the moment.
 ![inbox](img/inbox.png)
 ![inbox details](img/inbox-details.png)
 
@@ -33,10 +46,11 @@ Such receipts are available in the `History` Tab.
 ![revoked](img/revoked.png)
 
 Currently, we manage access receipts and corresponding authorization logs on your Pod in "hardwired" containers. This is not ideal but good enough of a start.
-The [MANDAT AuthApp](https://github.com/DATEV-Research/Solid-authorization-app) chose to rely on data registries and data registrations according to SAI - but those are not available in regular Pods out-of-the-box.
+The [MANDAT AuthApp](https://github.com/DATEV-Research/Solid-authorization-app) chose to rely on data registries and data registrations according to SAI - but those are not available in regular Pods wihtout prior setup.
 Similarly, type indicies are not always present.
-In fact, even our assumption of the `ldp:inbox` is not provided by default on CSS (for example).
-Therefore, we -- as a community -- need to discuss and decide how to properly support finding where data lives or where data should be stored, i.e. reliable discovery.
+In fact, even the `ldp:inbox` is not provided by default on CSS (for example).
+This is why we do the light setup ceremony when you start using the app.
+We -- as a community -- need to discuss and decide how to properly support finding where data lives or where data should be stored, i.e. reliable discovery.
 
 ## How to get an Access Request?
 

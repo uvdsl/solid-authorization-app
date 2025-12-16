@@ -150,18 +150,28 @@ async function checkForUnKnownGranteesWithUser() {
                 <div class="col-12">
                     <h6 class="mt-0 mb-2 text-600">Purpose</h6>
                     <div class="flex flex-wrap gap-2">
-                        <Chip v-for="purpose in accessRequest?.purposes" :key="purpose"
-                            :label="purpose.split('#').pop()" class="text-primary-300" />
+                        <p v-if="accessRequest?.seeAlso && accessRequest?.seeAlso.length === 0">
+                            No purpose information provided.
+                        </p>
+                        <div v-else>
+                            <Chip v-for="purpose in accessRequest?.purposes" :key="purpose"
+                                :label="purpose.split('#').pop()" class="text-primary-300" />
+                        </div>
                     </div>
                 </div>
 
                 <div class="col-12">
                     <h6 class="mt-0 mb-2 text-600">Context Information</h6>
                     <div class="flex flex-column gap-2">
-                        <a v-for="reference in accessRequest?.seeAlso" :key="reference" :href="reference"
-                            target="_blank" class="p-link">
-                            <i class="pi pi-external-link mr-2"></i>{{ reference }}
-                        </a>
+                        <p v-if="accessRequest?.seeAlso && accessRequest?.seeAlso.length === 0">
+                            No context information provided.
+                        </p>
+                        <div v-else>
+                            <a v-for="reference in accessRequest?.seeAlso" :key="reference" :href="reference"
+                                target="_blank" class="p-link">
+                                <i class="pi pi-external-link mr-2"></i>{{ reference }}
+                            </a>
+                        </div>
                     </div>
                 </div>
 

@@ -6,6 +6,8 @@ import { useServiceWorkerUpdate } from './composables/useServiceWorkerUpdate';
 import ContentPane from './views/ContentPane.vue';
 import { useSolidRdfStore } from './composables/store/useSolidRdfStore';
 import { watch } from 'vue';
+import { useDataContainers } from './composables/store/useDataContainers';
+import { useConfirm, useToast } from 'primevue';
 
 const { hasUpdatedAvailable, refreshApp } = useServiceWorkerUpdate();
 const { session, state } = useSolidSession();
@@ -13,6 +15,50 @@ const { store } = useSolidRdfStore();
 store.setConfig({ session })
 session.handleRedirectFromLogin();
 watch(() => state.isActive, () => console.log("Logged in:", state.webId), { immediate: true });
+
+
+
+
+const toast = useToast();
+const confirm = useConfirm();
+const { requiredContainers, setUpContainers } = useDataContainers()
+watch(() => requiredContainers.value, async () => {
+  if (requiredContainers.value.length === 0) {
+    return;
+  }
+  await askForSetUpConsent(requiredContainers.value).catch(() => session.logout());
+  await setUpContainers()
+  toast.add({
+            severity: "success",
+            summary: "Setup done.",
+            detail: "To receive access requests, set public APPEND permissions on your inbox.",
+            life: 15000,
+        });
+}, { immediate: true })
+
+
+async function askForSetUpConsent(required: string[]) {
+  return new Promise<void>((resolve, reject) => {
+    confirm.require({
+      message: `We need to setup your ${required.includes('inbox') ? 'WebId Inbox' : ''}${required.length>1?' and ':''}${required.includes('authz')? 'Authorization Log Containers':''} on your Pod.`,
+      header: 'May we quickly set things up?',
+      icon: 'pi pi-question-circle',
+      rejectLabel: 'Cancel',
+      rejectProps: {
+        label: 'No: Logout.',
+        severity: 'secondary',
+        outlined: true
+      },
+      acceptProps: {
+        label: 'Yes, prepare authorizations.',
+        severity: 'success'
+      },
+      accept: resolve,
+      reject
+    });
+  })
+}
+
 </script>
 
 <template>
@@ -34,7 +80,7 @@ watch(() => state.isActive, () => console.log("Logged in:", state.webId), { imme
     </template>
   </Dialog>
   <Toast position="bottom-right" :breakpoints="{ '420px': { width: '100%', right: '0', left: '0' } }" />
-   <ConfirmDialog></ConfirmDialog>
+  <ConfirmDialog></ConfirmDialog>
 </template>
 
 <style>
@@ -105,8 +151,8 @@ body {
   border-radius: 50%;
 }
 
-a:link, a:visited {
+a:link,
+a:visited {
   color: var(--p-primary-400);
 }
-
 </style>

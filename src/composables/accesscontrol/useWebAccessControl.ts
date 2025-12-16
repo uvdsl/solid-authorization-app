@@ -1,5 +1,5 @@
 import { Session } from "@uvdsl/solid-oidc-client-browser";
-import { getAclResourceUri, patchResource } from "@uvdsl/solid-requests";
+import { FOAF, getAclResourceUri, patchResource } from "@uvdsl/solid-requests";
 
 /**
  * Set the .acl according to the access need.
@@ -34,7 +34,7 @@ _:patch a solid:InsertDeletePatch;
         <${subject}>
             a acl:Authorization;
             acl:accessTo <.${accessTo.substring(accessTo.lastIndexOf("/"))}>;
-            acl:agent ${agent.map((a) => "<" + a + ">").join(", ")};
+            ${agent.map((a) => "" + (a === FOAF("Agent") ? "acl:agentClass" : "acl:agent") + " <" + a + ">").join("; ")};
             ${(isDefault) ? "acl:default <." + accessTo.substring(accessTo.lastIndexOf("/")) + ">;" : ""}
             acl:mode ${mode.map((mode) => "<" + mode + ">").join(", ")} .
     } .`; // n3 patch may not contain blank node, so we do the next best thing, and try to generate a unique name

@@ -1,9 +1,10 @@
 import { Quint } from "@uvdsl/solid-rdf-store";
-import { FOAF, RDF, SPACE, VCARD } from "@uvdsl/solid-requests";
+import { FOAF, RDF, RDFS, SPACE, VCARD } from "@uvdsl/solid-requests";
 import { ref, computed, ComputedRef, Ref, toValue, watchEffect } from "vue";
 import { useSolidRdfStore } from "./useSolidRdfStore";
 import { SessionEvents, SessionStateChangeDetail } from "@uvdsl/solid-oidc-client-browser";
 import { useSolidSession } from "../useSolidSession";
+import { Literal, NamedNode, Store } from "n3";
 
 const { store } = useSolidRdfStore();
 const objectPromiseCache = new Map<string, Promise<SolidWebId>>();
@@ -17,6 +18,11 @@ session.addEventListener(SessionEvents.STATE_CHANGE, (event: Event) => {
     }
 });
 
+// add dummy info for foaf:Agent // e.g. for the inbox-append-request
+const foafAgentInfo = new Store();
+foafAgentInfo.addQuad(new NamedNode(FOAF('Agent')), new NamedNode(RDF('type')), new NamedNode(RDFS('Class')))
+foafAgentInfo.addQuad(new NamedNode(FOAF('Agent')), new NamedNode(FOAF('name')), new Literal('Any Agent'))
+store.update(FOAF('Agent'), foafAgentInfo)
 
 /**
  * As defined in {@link https://solid.github.io/webid-profile/}.
