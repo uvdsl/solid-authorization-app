@@ -54,7 +54,7 @@ We -- as a community -- need to discuss and decide how to properly support findi
 
 ## How to get an Access Request?
 
-To test this AuthzApp, you need to send an access request to your `/inbox/`.
+To test this AuthzApp, you need to send an access request to your `ldp:inbox`.
 To programmatically create an access request, e.g. from your own web application, see this [little helper library](https://github.com/uvdsl/solid-access-requests).
 
 
@@ -132,9 +132,12 @@ The Solid Protocol standardizes the data access interface, authorization, authen
 
 Therefore, any data is good to be handled using the Solid Protocol!
 
-If you want to read up on how this works in B2B environments, check out our [presentation video](https://vimeo.com/1061996736?share=copy#t=2777.533) of the [MANDAT project](https://www.ti.rw.fau.de/projects/mandat/). There is code, too; see our open source [demo repository](https://github.com/mandat-project/hackathon-demo).
+If you want to read up on how this works in B2B environments, check out our [presentation video](https://vimeo.com/1062571527?share=copy#t=2921.799) of the [MANDAT project](https://www.ti.rw.fau.de/projects/mandat/) at Solid World. There is code, too; see our open source [demo repository](https://github.com/mandat-project/hackathon-demo). And our demo video is available [here](https://purl.archive.org/mandatb2b/JWE2024).
 
 And, have a look at our other publications from that project:
+
+- Andreas Both, Thorsten Kastner, Dustin Yeboah, Christoph Braun, Daniel Schraudner, Sebastian Schmid, Tobias Käfer, Andreas Harth: _Foundational Components for B2B Data Sharing Using the Solid Protocol._ Journal of Web Engineering, 24(04), 593–634. [[Open Access](https://doi.org/10.13052/jwe1540-9589.2445)]
+
 
 - Andreas Both, Thorsten Kastner, Dustin Yeboah, Christoph Braun, Daniel Schraudner, Sebastian Schmid, Tobias Käfer, Andreas Harth: _AuthApp - Portable, Reusable Solid App for GDPR-Compliant Access Granting._ ICWE 2024: 199-214 [[Postprint](https://publikationen.bibliothek.kit.edu/1000172187)]
 
