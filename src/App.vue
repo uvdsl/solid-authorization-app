@@ -31,7 +31,7 @@ watch(() => requiredContainers.value, async () => {
   toast.add({
             severity: "success",
             summary: "Setup done.",
-            detail: "To receive access requests, set public APPEND permissions on your inbox.",
+            detail: "Inspect your access request inbox!",
             life: 15000,
         });
 }, { immediate: true })
